@@ -28,71 +28,87 @@
 }
 </style> -->
 
-<!-- <script lang="ts"> -->
-<script setup lang="ts">
-import { ref } from "vue";
-
-const title = ref("My New Vue Title");
-const message = ref("Welcom to Vue");
-const textStatus = ref({ red: true });
-const user = ref({
-  firstName: "John",
-  lastName: "Smith",
-  isMember: true,
-  isPremium: true,
-});
-
-const fullName = `${user.value.firstName} ${user.value.lastName}`;
-
-const changeMemberStatus = () => {
-  user.value.isMember = !user.value.isMember;
+<script lang="ts">
+export default {
+  data() {
+    return {
+      title: "My New Vue Title",
+      message: "Welcom to Vue",
+      textStatus: {
+        red: true,
+      },
+      users: [
+        {
+          firstName: "John",
+          lastName: "Smith",
+          isMember: true,
+          isPremium: true,
+        },
+        {
+          firstName: "Taro",
+          lastName: "Shinjuku",
+          isMember: false,
+          isPremium: true,
+        },
+        {
+          firstName: "Hanako",
+          lastName: "Shibuya",
+          isMember: true,
+          isPremium: false,
+        },
+      ],
+    };
+  },
+  computed: {
+    fullName: () => (firstName: string, lastName: string) => {
+      return firstName + " " + lastName;
+    },
+  },
+  methods: {
+    changeMemberStatus(index: number) {
+      return (this.users[index].isMember = !this.users[index].isMember);
+    },
+    changePremiumStatus(index: number) {
+      return (this.users[index].isPremium = !this.users[index].isPremium);
+    },
+  },
 };
-const changePremiumStatus = () => {
-  user.value.isPremium = !user.value.isPremium;
-};
 
-// export default {
-//   data() {
-//     return {
-//       title: "My New Vue Title",
-//       message: "Welcom to Vue",
-//       textStatus: {
-//         red: true,
-//       },
-//       user: {
-//         firstName: "John",
-//         lastName: "Smith",
-//         isMember: true,
-//         isPremium: true,
-//       },
-//     };
-//   },
-//   computed: {
-//     fullName() {
-//       return this.user.firstName + " " + this.user.lastName;
-//     },
-//   },
-//   methods: {
-//     changeMemberStatus() {
-//       this.user.isMember = !this.user.isMember;
-//     },
-//     changePremiumStatus() {
-//       this.user.isPremium = !this.user.isPremium;
-//     },
-//   },
+// <script setup lang="ts">
+// import { ref } from "vue";
+
+// const title = ref("My New Vue Title");
+// const message = ref("Welcom to Vue");
+// const textStatus = ref({ red: true });
+// const user = ref({
+//   firstName: "John",
+//   lastName: "Smith",
+//   isMember: true,
+//   isPremium: true,
+// });
+
+// const fullName = `${user.value.firstName} ${user.value.lastName}`;
+
+// const changeMemberStatus = () => {
+//   user.value.isMember = !user.value.isMember;
+// };
+// const changePremiumStatus = () => {
+//   user.value.isPremium = !user.value.isPremium;
 // };
 </script>
 
 <template>
   <h1 :title="message" :class="textStatus">{{ title }}</h1>
-  <h2>{{ fullName }}さんのデータ</h2>
-  <p>Name: {{ fullName }}</p>
-  <p v-if="user.isMember">メンバーです</p>
-  <p v-else>メンバーではありません</p>
-  <p v-if="user.isPremium">プレミアムメンバーです</p>
-  <p v-else>プレミアムメンバーではありません</p>
-  <button @click="changeMemberStatus">メンバー状態切り替え</button>
-  <button @click="changePremiumStatus">プレミアムメンバー状態切り替え</button>
+  <h2>ユーザーのデータ</h2>
+  <div v-for="(user, index) in users" :key="index">
+    <p>Name: {{ fullName(user.firstName, user.lastName) }}</p>
+    <p v-if="user.isMember">メンバーです</p>
+    <p v-else>メンバーではありません</p>
+    <p v-if="user.isPremium">プレミアムメンバーです</p>
+    <p v-else>プレミアムメンバーではありません</p>
+    <button @click="changeMemberStatus(index)">メンバー状態切り替え</button>
+    <button @click="changePremiumStatus(index)">プレミアムメンバー状態切り替え</button>
+  </div>
 </template>
 
 <style scoped>
