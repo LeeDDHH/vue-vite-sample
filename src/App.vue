@@ -28,50 +28,59 @@
 }
 </style> -->
 
-<script lang="ts">
-// <script setup lang="ts">
-// import { ref } from "vue";
+<!-- <script lang="ts"> -->
+<script setup lang="ts">
+import { ref } from "vue";
 
-// const title = ref("My New Vue Title");
-// const message = ref("Welcom to Vue");
-// const textStatus = ref({ red: true });
-// const user = ref({
-//   firstName: "John",
-//   lastName: "Smith",
-// });
+const title = ref("My New Vue Title");
+const message = ref("Welcom to Vue");
+const textStatus = ref({ red: true });
+const user = ref({
+  firstName: "John",
+  lastName: "Smith",
+  isMember: true,
+  isPremium: true,
+});
 
-// const fullName = `${user.value.firstName} ${user.value.lastName}`;
+const fullName = `${user.value.firstName} ${user.value.lastName}`;
 
-export default {
-  data() {
-    return {
-      title: "My New Vue Title",
-      message: "Welcom to Vue",
-      textStatus: {
-        red: true,
-      },
-      user: {
-        firstName: "John",
-        lastName: "Smith",
-        isMember: true,
-        isPremium: true,
-      },
-    };
-  },
-  computed: {
-    fullName() {
-      return this.user.firstName + " " + this.user.lastName;
-    },
-  },
-  methods: {
-    changeMemberStatus() {
-      this.user.isMember = !this.user.isMember;
-    },
-    changePremiumStatus() {
-      this.user.isPremium = !this.user.isPremium;
-    },
-  },
+const changeMemberStatus = () => {
+  user.value.isMember = !user.value.isMember;
 };
+const changePremiumStatus = () => {
+  user.value.isPremium = !user.value.isPremium;
+};
+
+// export default {
+//   data() {
+//     return {
+//       title: "My New Vue Title",
+//       message: "Welcom to Vue",
+//       textStatus: {
+//         red: true,
+//       },
+//       user: {
+//         firstName: "John",
+//         lastName: "Smith",
+//         isMember: true,
+//         isPremium: true,
+//       },
+//     };
+//   },
+//   computed: {
+//     fullName() {
+//       return this.user.firstName + " " + this.user.lastName;
+//     },
+//   },
+//   methods: {
+//     changeMemberStatus() {
+//       this.user.isMember = !this.user.isMember;
+//     },
+//     changePremiumStatus() {
+//       this.user.isPremium = !this.user.isPremium;
+//     },
+//   },
+// };
 </script>
 
 <template>
