@@ -28,7 +28,7 @@
 }
 </style> -->
 
-<script lang="ts">
+<!-- <script lang="ts">
 export default {
   data() {
     return {
@@ -72,29 +72,43 @@ export default {
       return (this.users[index].isPremium = !this.users[index].isPremium);
     },
   },
+}; -->
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const title = ref("My New Vue Title");
+const message = ref("Welcom to Vue");
+const textStatus = ref({ red: true });
+const users = ref([
+  {
+    firstName: "John",
+    lastName: "Smith",
+    isMember: true,
+    isPremium: true,
+  },
+  {
+    firstName: "Taro",
+    lastName: "Shinjuku",
+    isMember: false,
+    isPremium: true,
+  },
+  {
+    firstName: "Hanako",
+    lastName: "Shibuya",
+    isMember: true,
+    isPremium: false,
+  },
+]);
+
+const fullName = (firstName: string, lastName: string) => `${firstName} ${lastName}`;
+
+const changeMemberStatus = (index: number) => {
+  users.value[index].isMember = !users.value[index].isMember;
 };
-
-// <script setup lang="ts">
-// import { ref } from "vue";
-
-// const title = ref("My New Vue Title");
-// const message = ref("Welcom to Vue");
-// const textStatus = ref({ red: true });
-// const user = ref({
-//   firstName: "John",
-//   lastName: "Smith",
-//   isMember: true,
-//   isPremium: true,
-// });
-
-// const fullName = `${user.value.firstName} ${user.value.lastName}`;
-
-// const changeMemberStatus = () => {
-//   user.value.isMember = !user.value.isMember;
-// };
-// const changePremiumStatus = () => {
-//   user.value.isPremium = !user.value.isPremium;
-// };
+const changePremiumStatus = (index: number) => {
+  users.value[index].isPremium = !users.value[index].isPremium;
+};
 </script>
 
 <template>
