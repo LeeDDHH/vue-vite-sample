@@ -28,7 +28,7 @@
 }
 </style> -->
 
-<script lang="ts">
+<!-- <script lang="ts">
 export default {
   data() {
     return {
@@ -109,51 +109,87 @@ export default {
       this.validateStringInput("lastName");
     },
   },
+}; -->
+
+<script setup lang="ts">
+import { ref, watch } from "vue";
+
+const title = ref("My New Vue Title");
+const message = ref("Welcom to Vue");
+const textStatus = ref({ red: true });
+const users = ref([
+  {
+    firstName: "John",
+    lastName: "Smith",
+    isMember: true,
+    isPremium: true,
+  },
+  {
+    firstName: "Taro",
+    lastName: "Shinjuku",
+    isMember: false,
+    isPremium: true,
+  },
+  {
+    firstName: "Hanako",
+    lastName: "Shibuya",
+    isMember: true,
+    isPremium: false,
+  },
+]);
+const input = ref({
+  firstName: "",
+  lastName: "",
+  isMember: false,
+  isPremium: false,
+});
+const error = ref({
+  firstName: false,
+  lastName: false,
+});
+
+watch(
+  () => input.value.firstName,
+  (cur: string, prev: string) => {
+    validateStringInput("firstName");
+  }
+);
+
+watch(
+  () => input.value.lastName,
+  (cur: string, prev: string) => {
+    validateStringInput("lastName");
+  }
+);
+
+const fullName = (firstName: string, lastName: string) => `${firstName} ${lastName}`;
+
+const changeMemberStatus = (index: number) => {
+  users.value[index].isMember = !users.value[index].isMember;
+};
+const changePremiumStatus = (index: number) => {
+  users.value[index].isPremium = !users.value[index].isPremium;
+};
+const addUser = () => {
+  if (!input.value.firstName || !input.value.lastName) return;
+  users.value.push(input.value);
+  input.value = {
+    firstName: "",
+    lastName: "",
+    isMember: false,
+    isPremium: false,
+  };
+  error.value = {
+    firstName: false,
+    lastName: false,
+  };
 };
 
-// <script setup lang="ts">
-// import { ref } from "vue";
-
-// const title = ref("My New Vue Title");
-// const message = ref("Welcom to Vue");
-// const textStatus = ref({ red: true });
-// const users = ref([
-//   {
-//     firstName: "John",
-//     lastName: "Smith",
-//     isMember: true,
-//     isPremium: true,
-//   },
-//   {
-//     firstName: "Taro",
-//     lastName: "Shinjuku",
-//     isMember: false,
-//     isPremium: true,
-//   },
-//   {
-//     firstName: "Hanako",
-//     lastName: "Shibuya",
-//     isMember: true,
-//     isPremium: false,
-//   },
-// ]);
-
-// const fullName = (firstName: string, lastName: string) => `${firstName} ${lastName}`;
-
-// const changeMemberStatus = (index: number) => {
-//   users.value[index].isMember = !users.value[index].isMember;
-// };
-// const changePremiumStatus = (index: number) => {
-//   users.value[index].isPremium = !users.value[index].isPremium;
-// };
-// const addUser = () => {
-//   users.value.push({
-//     firstName: "First",
-//     lastName: "Last",
-//     isMember: true,
-//     isPremium: true,
-//   });
-// };
+const validateStringInput = (inputElem: "firstName" | "lastName") => {
+  if (typeof input.value[inputElem] === "string" && !(input.value[inputElem] as string).length)
+    return (error.value[inputElem] = true);
+  error.value[inputElem] = false;
+};
 </script>
 
 <template>
