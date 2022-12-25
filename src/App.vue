@@ -28,7 +28,7 @@
 }
 </style> -->
 
-<!-- <script lang="ts">
+<script lang="ts">
 export default {
   data() {
     return {
@@ -36,6 +36,16 @@ export default {
       message: "Welcom to Vue",
       textStatus: {
         red: true,
+      },
+      error: {
+        firstName: false,
+        lastName: false,
+      },
+      input: {
+        firstName: "",
+        lastName: "",
+        isMember: false,
+        isPremium: false,
       },
       users: [
         {
@@ -71,64 +81,113 @@ export default {
     changePremiumStatus(index: number) {
       return (this.users[index].isPremium = !this.users[index].isPremium);
     },
+    validateStringInput(inputElem: "firstName" | "lastName") {
+      console.log(inputElem);
+      if (!this.input[inputElem].length) return (this.error[inputElem] = true);
+      this.error[inputElem] = false;
+    },
     addUser() {
-      this.users.push({
-        firstName: "First",
-        lastName: "Last",
-        isMember: true,
-        isPremium: true,
-      });
+      if (!this.input.firstName || !this.input.lastName) return;
+      this.users.push(this.input);
+      this.input = {
+        firstName: "",
+        lastName: "",
+        isMember: false,
+        isPremium: false,
+      };
+      this.error = {
+        firstName: false,
+        lastName: false,
+      };
     },
   },
-}; -->
-
-<script setup lang="ts">
-import { ref } from "vue";
-
-const title = ref("My New Vue Title");
-const message = ref("Welcom to Vue");
-const textStatus = ref({ red: true });
-const users = ref([
-  {
-    firstName: "John",
-    lastName: "Smith",
-    isMember: true,
-    isPremium: true,
+  watch: {
+    "input.firstName"() {
+      this.validateStringInput("firstName");
+    },
+    "input.lastName"() {
+      this.validateStringInput("lastName");
+    },
   },
-  {
-    firstName: "Taro",
-    lastName: "Shinjuku",
-    isMember: false,
-    isPremium: true,
-  },
-  {
-    firstName: "Hanako",
-    lastName: "Shibuya",
-    isMember: true,
-    isPremium: false,
-  },
-]);
+};
 
-const fullName = (firstName: string, lastName: string) => `${firstName} ${lastName}`;
+// <script setup lang="ts">
+// import { ref } from "vue";
 
-const changeMemberStatus = (index: number) => {
-  users.value[index].isMember = !users.value[index].isMember;
-};
-const changePremiumStatus = (index: number) => {
-  users.value[index].isPremium = !users.value[index].isPremium;
-};
-const addUser = () => {
-  users.value.push({
-    firstName: "First",
-    lastName: "Last",
-    isMember: true,
-    isPremium: true,
-  });
-};
+// const title = ref("My New Vue Title");
+// const message = ref("Welcom to Vue");
+// const textStatus = ref({ red: true });
+// const users = ref([
+//   {
+//     firstName: "John",
+//     lastName: "Smith",
+//     isMember: true,
+//     isPremium: true,
+//   },
+//   {
+//     firstName: "Taro",
+//     lastName: "Shinjuku",
+//     isMember: false,
+//     isPremium: true,
+//   },
+//   {
+//     firstName: "Hanako",
+//     lastName: "Shibuya",
+//     isMember: true,
+//     isPremium: false,
+//   },
+// ]);
+
+// const fullName = (firstName: string, lastName: string) => `${firstName} ${lastName}`;
+
+// const changeMemberStatus = (index: number) => {
+//   users.value[index].isMember = !users.value[index].isMember;
+// };
+// const changePremiumStatus = (index: number) => {
+//   users.value[index].isPremium = !users.value[index].isPremium;
+// };
+// const addUser = () => {
+//   users.value.push({
+//     firstName: "First",
+//     lastName: "Last",
+//     isMember: true,
+//     isPremium: true,
+//   });
+// };
 </script>
 
 <template>
   <h1 :title="message" :class="textStatus">{{ title }}</h1>
+  <div>
+    <label for="firstName">FirstName: </label>
+    <input
+      v-model="input.firstName"
+      @blur="validateStringInput('firstName')"
+      type="text"
+      id="firstName"
+      placeholder="Enter the FirstName"
+    />
+    <p v-if="error.firstName" :class="textStatus">require first name.</p>
+  </div>
+  <div>
+    <label for="lastName">LastName: </label>
+    <input
+      v-model="input.lastName"
+      @blur="validateStringInput('lastName')"
+      type="text"
+      id="lastName"
+      placeholder="Enter the LastName"
+    />
+    <p v-if="error.lastName" :class="textStatus">require last name.</p>
+  </div>
+  <div>
+    <label for="isMember">isMember: </label>
+    <input v-model="input.isMember" type="checkbox" id="isMember" />
+  </div>
+  <div>
+    <label for="isPremium">isPremium: </label>
+    <input v-model="input.isPremium" type="checkbox" id="isPremium" />
+  </div>
   <button @click="addUser">ユーザー追加</button>
   <h2>ユーザーのデータ</h2>
   <div v-for="(user, index) in users" :key="index">
