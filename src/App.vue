@@ -71,6 +71,14 @@ export default {
     changePremiumStatus(index: number) {
       return (this.users[index].isPremium = !this.users[index].isPremium);
     },
+    addUser() {
+      this.users.push({
+        firstName: "First",
+        lastName: "Last",
+        isMember: true,
+        isPremium: true,
+      });
+    },
   },
 }; -->
 
@@ -109,10 +117,19 @@ const changeMemberStatus = (index: number) => {
 const changePremiumStatus = (index: number) => {
   users.value[index].isPremium = !users.value[index].isPremium;
 };
+const addUser = () => {
+  users.value.push({
+    firstName: "First",
+    lastName: "Last",
+    isMember: true,
+    isPremium: true,
+  });
+};
 </script>
 
 <template>
   <h1 :title="message" :class="textStatus">{{ title }}</h1>
+  <button @click="addUser">ユーザー追加</button>
   <h2>ユーザーのデータ</h2>
   <div v-for="(user, index) in users" :key="index">
     <p>Name: {{ fullName(user.firstName, user.lastName) }}</p>
