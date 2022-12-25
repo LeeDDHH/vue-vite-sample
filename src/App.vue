@@ -28,6 +28,66 @@
 }
 </style> -->
 
+<script lang="ts">
+// <script setup lang="ts">
+// import { ref } from "vue";
+
+// const title = ref("My New Vue Title");
+// const message = ref("Welcom to Vue");
+// const textStatus = ref({ red: true });
+// const user = ref({
+//   firstName: "John",
+//   lastName: "Smith",
+// });
+
+// const fullName = `${user.value.firstName} ${user.value.lastName}`;
+
+export default {
+  data() {
+    return {
+      title: "My New Vue Title",
+      message: "Welcom to Vue",
+      textStatus: {
+        red: true,
+      },
+      user: {
+        firstName: "John",
+        lastName: "Smith",
+        isMember: true,
+        isPremium: true,
+      },
+    };
+  },
+  computed: {
+    fullName() {
+      return this.user.firstName + " " + this.user.lastName;
+    },
+  },
+  methods: {
+    changeMemberStatus() {
+      this.user.isMember = !this.user.isMember;
+    },
+    changePremiumStatus() {
+      this.user.isPremium = !this.user.isPremium;
+    },
+  },
+};
+</script>
+
 <template>
-  <h1>My Vue Playground</h1>
+  <h1 :title="message" :class="textStatus">{{ title }}</h1>
+  <h2>{{ fullName }}さんのデータ</h2>
+  <p>Name: {{ fullName }}</p>
+  <p v-if="user.isMember">メンバーです</p>
+  <p v-else>メンバーではありません</p>
+  <p v-if="user.isPremium">プレミアムメンバーです</p>
+  <p v-else>プレミアムメンバーではありません</p>
+  <button @click="changeMemberStatus">メンバー状態切り替え</button>
+  <button @click="changePremiumStatus">プレミアムメンバー状態切り替え</button>
 </template>
+
+<style scoped>
+.red {
+  color: red;
+}
+</style>
